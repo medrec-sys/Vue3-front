@@ -1,1 +1,6 @@
-export {textStore} from '@/stores/stores/text'
+export {useUserStore} from '@/stores/stores/userStore'
+export {useKnowledgeStore} from '@/stores/stores/knowledgeStore'
+export {useAgentStore} from '@/stores/stores/agentStore'
+export {useAiChatStore} from '@/stores/stores/aiChatStore'
+export {useLoginStore} from '@/stores/stores/loginStore'
+export {useVectorStore} from '@/stores/stores/vectorStore'
