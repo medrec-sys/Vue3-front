@@ -40,7 +40,7 @@ export const useLoginStore = defineStore('login', () => {
     const logout = () => {
         token.value = '';
         isLoggedIn.value = false;
-        localStorage.removeItem('token');
+        localStorage.removeItem('medrec_token');
 
         // 可选：跳转到登录页
         const router = useRouter();
@@ -49,7 +49,7 @@ export const useLoginStore = defineStore('login', () => {
 
     // 检查登录状态
     const checkLoginStatus = () => {
-        const storedToken = localStorage.getItem('token');
+        const storedToken = localStorage.getItem('medrec_token');
         if (storedToken) {
             token.value = storedToken;
             isLoggedIn.value = true;
@@ -58,7 +58,7 @@ export const useLoginStore = defineStore('login', () => {
 
     // 获取token
     const getToken = () => {
-        return token.value || localStorage.getItem('token') || '';
+        return token.value || localStorage.getItem('medrec_token') || '';
     };
 
     return {

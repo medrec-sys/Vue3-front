@@ -1,6 +1,4 @@
 import '@/styles/global.css';
-import '@/styles/mouse.css';
-import '@/js/mouse.js';
 
 import { createApp } from 'vue'
 import ElementPlus from 'element-plus'

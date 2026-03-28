@@ -3,7 +3,7 @@
 </script>
 
 <template>
-开始
+<div>Agent</div>
 </template>
 
 <style scoped>
