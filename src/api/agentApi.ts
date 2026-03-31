@@ -3,14 +3,8 @@ import type {Result} from "@/types/common/Result";
 import type {PageVO} from "@/types/common/PageVO";
 import type { AxiosResponse } from 'axios';
 import {myAxios} from "@/utils/axios";
+import type {Agent} from "@/types/entity/Agent";
 
-export interface Agent {
-    id?: number;
-    // 根据实际Agent实体添加字段
-    name?: string;
-    description?: string;
-    [key: string]: any;
-}
 
 export const agentApi = {
     // 分页获取Agent列表

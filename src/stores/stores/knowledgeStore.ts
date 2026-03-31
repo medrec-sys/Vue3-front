@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { Knowledge } from '@/api/knowledgeApi';
 import { knowledgeApi } from '@/api/knowledgeApi';
 import type { PageDTO } from '@/types/common/PageDTO';
+import type {Knowledge} from "@/types/entity/Knowledge";
 
 export const useKnowledgeStore = defineStore('knowledge', () => {
     const knowledges = ref<Knowledge[]>([]);
@@ -12,7 +12,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
     const pageQuery = ref<PageDTO<Knowledge>>({
         pageNum: 1,
         pageSize: 10,
-        order: 'ASC',
+        order: 'DESC',
         query: {} as Knowledge,
     });
     const loading = ref(false);

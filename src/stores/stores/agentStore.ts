@@ -1,8 +1,8 @@
 import {defineStore} from 'pinia';
 import {ref} from 'vue';
-import type {Agent} from '@/api/agentApi';
 import {agentApi} from '@/api/agentApi';
 import type {PageDTO} from '@/types/common/PageDTO';
+import type {Agent} from "@/types/entity/Agent";
 
 export const useAgentStore = defineStore('agent', () => {
     const agents = ref<Agent[]>([]);
@@ -12,7 +12,7 @@ export const useAgentStore = defineStore('agent', () => {
     const pageQuery = ref<PageDTO<Agent>>({
         pageNum: 1,
         pageSize: 10,
-        order: 'ASC',
+        order: 'DESC',
         query: {} as Agent,
     });
     const loading = ref(false);

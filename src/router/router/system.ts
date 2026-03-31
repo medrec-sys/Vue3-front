@@ -29,7 +29,11 @@ const aboutRoutes: RouteRecordRaw[] = [
             {
                 path: ROUTE_PATHS.VECTOR,
                 component: () => import('@/views/Vector/index.vue'),
-            }
+            },
+            {
+                path: ROUTE_PATHS.CHAT,
+                component: () => import('@/views/Chat/index.vue'),
+            },
         ],
     },
     {

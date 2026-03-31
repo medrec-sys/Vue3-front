@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { Vector } from '@/api/vectorApi';
 import { vectorApi } from '@/api/vectorApi';
 import type { PageDTO } from '@/types/common/PageDTO';
+import logger from "@/utils/logger";
+import type {Vector} from "@/types/entity/Vector";
 
 export const useVectorStore = defineStore('vector', () => {
     const vectors = ref<Vector[]>([]);
@@ -12,7 +13,7 @@ export const useVectorStore = defineStore('vector', () => {
     const pageQuery = ref<PageDTO<Vector>>({
         pageNum: 1,
         pageSize: 10,
-        order: 'ASC',
+        order: 'DESC',
         query: {} as Vector,
     });
     const loading = ref(false);
@@ -86,11 +87,13 @@ export const useVectorStore = defineStore('vector', () => {
 
     // 分页查询向量
     const fetchVectorPage = async () => {
+        logger.log("1", pageQuery.value)
         loading.value = true;
         try {
             const res = await vectorApi.getPage(pageQuery.value);
             vectors.value = res.data.data.rows;
             total.value = res.data.data.total;
+            logger.log("12", res.data)
             return res.data;
         } finally {
             loading.value = false;

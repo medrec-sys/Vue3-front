@@ -2,12 +2,6 @@ import type { AxiosResponse } from 'axios';
 import {myAxios} from "@/utils/axios";
 import type {Result} from "@/types/common/Result";
 
-export interface LoginData {
-    account: string;
-    password: string;
-    username?: string;
-}
-
 export const loginApi = {
     // 用户登录
     login(account: string, password: string): Promise<AxiosResponse<Result<string>>> {
@@ -17,7 +11,7 @@ export const loginApi = {
             data: {
                 account,
                 password,
-            } as LoginData,
+            },
         });
     },
 
@@ -30,7 +24,7 @@ export const loginApi = {
                 account,
                 username,
                 password,
-            } as LoginData,
+            },
         });
     },
 };

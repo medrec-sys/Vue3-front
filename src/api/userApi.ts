@@ -3,14 +3,7 @@ import type {PageDTO} from "@/types/common/PageDTO";
 import type {Result} from "@/types/common/Result";
 import type {PageVO} from "@/types/common/PageVO";
 import type { AxiosResponse } from 'axios';
-
-export interface User {
-    id?: number;
-    account?: string;
-    username?: string;
-    password?: string;
-    // 其他字段根据实际需求添加
-}
+import type {User} from "@/types/entity/User";
 
 export const userApi = {
     // 分页获取用户列表

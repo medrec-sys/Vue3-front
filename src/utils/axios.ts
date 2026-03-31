@@ -38,7 +38,7 @@ myAxios.interceptors.response.use(
             localStorage.removeItem('medrec_token');
         }
         if (response.data.code != 1) {
-            throw new Error(response.data.message || 'Request failed');
+            console.error(response.data.message || 'Request failed');
         }
         return response;
     },

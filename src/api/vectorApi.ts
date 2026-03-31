@@ -4,14 +4,8 @@ import {myAxios} from "@/utils/axios";
 import type {PageDTO} from "@/types/common/PageDTO";
 import type {Result} from "@/types/common/Result";
 import type {PageVO} from "@/types/common/PageVO";
+import type {Vector} from "@/types/entity/Vector";
 
-export interface Vector {
-    id?: number;
-    // 根据实际Vector实体添加字段
-    name?: string;
-    description?: string;
-    [key: string]: any;
-}
 
 export const vectorApi = {
     // 分页获取向量列表

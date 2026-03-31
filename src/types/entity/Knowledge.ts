@@ -3,17 +3,17 @@
  */
 export interface Knowledge {
     /** 主键ID */
-    id?: number;
+    id: number;
     /** 知识名称 */
-    name?: string;
+    name: string;
     /** 存储路径 */
-    path?: string;
+    path: string;
     /** 向量库ID */
-    vectorId?: number;
+    vectorId: number;
     /** 分块数量 */
-    chunk?: number;
+    chunk: number;
     /** 创建人ID */
-    createBy?: number;
+    createBy: number;
     /** 创建时间 */
-    createTime?: Date | string;
+    createTime: Date | string;
 }

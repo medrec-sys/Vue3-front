@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { User } from '@/api/userApi';
 import { userApi } from '@/api/userApi';
 import type { PageDTO } from '@/types/common/PageDTO';
+import type {User} from "@/types/entity/User";
 
 export const useUserStore = defineStore('user', () => {
     const users = ref<User[]>([]);
@@ -11,7 +11,7 @@ export const useUserStore = defineStore('user', () => {
     const pageQuery = ref<PageDTO<User>>({
         pageNum: 1,
         pageSize: 10,
-        order: 'ASC',
+        order: 'DESC',
         query: {} as User,
     });
     const loading = ref(false);

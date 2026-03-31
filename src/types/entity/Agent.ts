@@ -3,23 +3,23 @@
  */
 export interface Agent {
     /** 主键ID */
-    id?: number;
+    id: number;
     /** Agent名称 */
-    name?: string;
+    name: string;
     /** 描述 */
-    description?: string;
+    description: string;
     /** 提示词 */
-    prompt?: string;
+    prompt: string;
     /** 温度参数 */
-    temperature?: number;
+    temperature: number;
     /** 最大消息数 */
-    maxMessage?: number;
+    maxMessage: number;
     /** TopK参数 */
-    topK?: number;
+    topK: number;
     /** 相似度阈值 */
-    similarity?: number;
+    similarity: number;
     /** 创建人ID */
-    createBy?: number;
+    createBy: number;
     /** 创建时间 */
-    createTime?: Date | string;
+    createTime: Date | string;
 }

@@ -3,14 +3,8 @@ import type {Result} from "@/types/common/Result";
 import type {PageVO} from "@/types/common/PageVO";
 import type { AxiosResponse } from 'axios';
 import {myAxios} from "@/utils/axios";
+import type {Knowledge} from "@/types/entity/Knowledge";
 
-export interface Knowledge {
-    id?: number;
-    // 根据实际Knowledge实体添加字段
-    name?: string;
-    content?: string;
-    [key: string]: any;
-}
 
 export const knowledgeApi = {
     // 分页获取知识列表

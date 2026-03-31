@@ -25,30 +25,30 @@ const registerFormRef = ref<FormInstance>()
 
 // 表单规则
 const loginRules = reactive<FormRules>({
-  account: [
-    {required: true, message: '请输入账号', trigger: 'blur'},
-    {min: 4, max: 16, message: '长度在4到16个字符', trigger: 'blur'}
-  ],
-  password: [
-    {required: true, message: '请输入密码', trigger: 'blur'},
-    {min: 5, max: 20, message: '长度在5到20个字符', trigger: 'blur'}
-  ]
+  // account: [
+  //   {required: true, message: '请输入账号', trigger: 'blur'},
+  //   {min: 4, max: 16, message: '长度在4到16个字符', trigger: 'blur'}
+  // ],
+  // password: [
+  //   {required: true, message: '请输入密码', trigger: 'blur'},
+  //   {min: 5, max: 20, message: '长度在5到20个字符', trigger: 'blur'}
+  // ]
 })
 
 const registerRules = reactive<FormRules>({
-  account: [
-    {required: true, message: '请输入账号', trigger: 'blur'},
-    {min: 4, max: 16, message: '长度在4到16个字符', trigger: 'blur'}
-  ],
-  username: [
-    {required: true, message: '请输入用户名', trigger: 'blur'},
-    {min: 2, max: 16, message: '长度在2到16个字符', trigger: 'blur'}
-  ],
-  password: [
-    {required: true, message: '请输入密码', trigger: 'blur'},
-    {min: 5, max: 20, message: '长度在5到20个字符', trigger: 'blur'},
-    {pattern: /^(?=.*[A-Za-z])(?=.*\d).+$/, message: '必须包含字母和数字', trigger: 'blur'}
-  ],
+  // account: [
+  //   {required: true, message: '请输入账号', trigger: 'blur'},
+  //   {min: 4, max: 16, message: '长度在4到16个字符', trigger: 'blur'}
+  // ],
+  // username: [
+  //   {required: true, message: '请输入用户名', trigger: 'blur'},
+  //   {min: 2, max: 16, message: '长度在2到16个字符', trigger: 'blur'}
+  // ],
+  // password: [
+  //   {required: true, message: '请输入密码', trigger: 'blur'},
+  //   {min: 5, max: 20, message: '长度在5到20个字符', trigger: 'blur'},
+  //   {pattern: /^(?=.*[A-Za-z])(?=.*\d).+$/, message: '必须包含字母和数字', trigger: 'blur'}
+  // ],
   password2: [
     {required: true, message: '请再次输入密码', trigger: 'blur'},
     {validator: validatePassword2, trigger: 'blur'}
@@ -120,7 +120,9 @@ const handleLogin = async () => {
 
   await loginFormRef.value.validate()
   isSubmitting.value = true
+
   const res = await loginStore.login(loginForm.account, loginForm.password)
+
   if (res.code == 1) {
     ElNotification({
       title: '登录成功' as any,
@@ -129,7 +131,6 @@ const handleLogin = async () => {
     })
     await router.push('/home')
   } else {
-    console.error('登录失败:')
     ElMessage.error(res.message as any)
   }
   isSubmitting.value = false
@@ -142,7 +143,6 @@ const handleRegister = async () => {
     isSubmitting.value = true
     const res = await loginStore.register(registerForm.account, registerForm.username, registerForm.password)
     if (res.code === -1) {
-      ElMessage.error(res.message  as any)
       return
     }
 
@@ -153,7 +153,6 @@ const handleRegister = async () => {
     })
     goToOther(false) // 注册成功后自动切换到登录界面
   } catch (error) {
-    console.error('注册失败:', error)
     ElMessage.error('注册失败，请检查输入信息'  as any)
   } finally {
     isSubmitting.value = false
