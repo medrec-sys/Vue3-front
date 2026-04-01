@@ -34,6 +34,10 @@ const aboutRoutes: RouteRecordRaw[] = [
                 path: ROUTE_PATHS.CHAT,
                 component: () => import('@/views/Chat/index.vue'),
             },
+            {
+                path: ROUTE_PATHS.SEARCH,
+                component: () => import('@/views/Search/index.vue'),
+            },
         ],
     },
     {

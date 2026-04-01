@@ -1,10 +1,12 @@
 <template>
-  <div class="vector-card-wrapper">
+  <div
+      @click="click"
+      class="vector-card-wrapper">
     <el-card class="vector-card" shadow="hover" body-style="{ padding: '0px' }">
       <!-- 按钮区 -->
       <div class="card-buttons">
-        <el-button class="alert-btn" type="primary" round :icon="MoreFilled" @click="alertVector"></el-button>
-        <el-button class="delete-btn" type="primary" round :icon="Close" @click="deleteVector"></el-button>
+        <el-button class="alert-btn" type="primary" round :icon="MoreFilled" @click.stop="alertVector"></el-button>
+        <el-button class="delete-btn" type="primary" round :icon="Close" @click.stop="deleteVector"></el-button>
       </div>
 
       <div class="card-content">
@@ -40,6 +42,14 @@ import {Collection} from '@element-plus/icons-vue'
 import type {Vector} from "@/types/entity/Vector";
 import {useVectorStore} from "@/stores";
 import {ElMessage, ElMessageBox} from "element-plus";
+import {ROUTE_PATHS} from '@/constant/SystemRouterConfig'
+import {useHomeStore} from '@/stores';
+
+import {useRouter} from "vue-router";
+
+const router = useRouter();
+const homeStore = useHomeStore();
+
 
 // 定义组件 props
 interface Props {
@@ -78,6 +88,12 @@ const deleteVector = async () => {
   } catch {
     // 用户取消删除，不做任何操作
   }
+}
+
+const click = () => {
+  vectorStore.searchingVector = props.vector
+  router.push(ROUTE_PATHS.SEARCH)
+  homeStore.activeMenuItem = ROUTE_PATHS.SEARCH
 }
 
 const alertVector = () => {

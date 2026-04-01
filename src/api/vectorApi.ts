@@ -5,6 +5,8 @@ import type {PageDTO} from "@/types/common/PageDTO";
 import type {Result} from "@/types/common/Result";
 import type {PageVO} from "@/types/common/PageVO";
 import type {Vector} from "@/types/entity/Vector";
+import type {VectorSearchArgs} from "@/types/dto/VectorSearchArgs";
+import type {Document} from "@/types/entity/Document";
 
 
 export const vectorApi = {
@@ -50,4 +52,13 @@ export const vectorApi = {
             data: vector,
         });
     },
+
+    // 检索
+    search(args: VectorSearchArgs, vectorId: number): Promise<AxiosResponse<Result<Document[]>>> {
+        return myAxios({
+            method: 'post',
+            url: `/api/vector/search/${vectorId}`,
+            data: args,
+        });
+    }
 };

@@ -2,8 +2,9 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { vectorApi } from '@/api/vectorApi';
 import type { PageDTO } from '@/types/common/PageDTO';
-import logger from "@/utils/logger";
 import type {Vector} from "@/types/entity/Vector";
+import type {VectorSearchArgs} from "@/types/dto/VectorSearchArgs";
+import type {Document} from "@/types/entity/Document";
 
 export const useVectorStore = defineStore('vector', () => {
     const vectors = ref<Vector[]>([]);
@@ -17,6 +18,10 @@ export const useVectorStore = defineStore('vector', () => {
         query: {} as Vector,
     });
     const loading = ref(false);
+    // 当前检索使用的库
+    const searchingVector = ref<Vector>({} as Vector)
+    // 检索结果
+    const documents = ref<Document[]>([])
 
     // 创建向量
     const createVector = async (vector: Vector) => {
@@ -87,13 +92,11 @@ export const useVectorStore = defineStore('vector', () => {
 
     // 分页查询向量
     const fetchVectorPage = async () => {
-        logger.log("1", pageQuery.value)
         loading.value = true;
         try {
             const res = await vectorApi.getPage(pageQuery.value);
             vectors.value = res.data.data.rows;
             total.value = res.data.data.total;
-            logger.log("12", res.data)
             return res.data;
         } finally {
             loading.value = false;
@@ -106,6 +109,16 @@ export const useVectorStore = defineStore('vector', () => {
         return vector?.name || '';
     };
 
+    // 检索
+    const search = async (args: VectorSearchArgs) => {
+        try {
+            const res  = await vectorApi.search(args, searchingVector.value.id);
+            // 排序
+            res.data.data.sort((a, b) => a.metadata.distance - b.metadata.distance);
+            return res.data
+        } finally {}
+    }
+
     return {
         vectors,
         allVectors,
@@ -113,6 +126,9 @@ export const useVectorStore = defineStore('vector', () => {
         loading,
         pageQuery,
         total,
+        searchingVector,
+        documents,
+        search,
         createVector,
         fetchVector,
         updateVector,

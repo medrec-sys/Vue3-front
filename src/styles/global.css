@@ -14,20 +14,20 @@
 /*
 滚动条样式
 */
-.card-list-container::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 8px;
 }
 
-.card-list-container::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 4px;
 }
 
-.card-list-container::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background: #c1c1c1;
     border-radius: 4px;
 }
 
-.card-list-container::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
 }
