@@ -8,6 +8,8 @@ import CardList from "@/views/Search/com/CardList.vue";
 import Input from "@/views/Search/com/Input.vue";
 import MainAsideLayout from "@/components/MainAsideLayout.vue";
 import File from "@/components/File.vue";
+import KnowledgeList from "@/views/Search/com/KnowledgeList.vue";
+import KnowledgeTopBar from "@/views/Search/com/KnowledgeTopBar.vue";
 
 const vectorStore = useVectorStore();
 
@@ -25,6 +27,7 @@ const search = async (args: VectorSearchArgs) => {
 }
 
 const showRight = ref(false);
+const showLeft = ref(false);
 
 const fileInfo = ref({
   name: "",
@@ -39,7 +42,11 @@ const showFile = (document: Document) => {
   showRight.value = true
 }
 
-const close = () => {
+const showKnowledge = () => {
+  showLeft.value = !showLeft.value
+}
+
+const closeR = () => {
   fileInfo.value = {
     name: "",
     url: "",
@@ -53,10 +60,11 @@ const close = () => {
 
 <template>
   <MainAsideLayout
-      :show-aside="showRight"
+      :show-right-aside="showRight"
+      :show-left-aside="showLeft"
       @close="showRight = false"
   >
-    <!-- 左侧主页面 -->
+    <!-- 主页面 -->
     <template #main>
       <div class="main">
         <CardList
@@ -67,21 +75,32 @@ const close = () => {
 
         <div  class="input">
           <Input
+              @showKnowledge="showKnowledge"
               @search="search"
           />
         </div>
       </div>
     </template>
 
+    <!-- 左侧页面 -->
+    <template #left>
+      <KnowledgeTopBar
+        class="knowledge-bar"
+      ></KnowledgeTopBar>
+      <KnowledgeList
+        class="knowledge-list"
+      ></KnowledgeList>
+    </template>
+
     <!-- 右侧页面 -->
-    <template #aside>
+    <template #right>
       <File
           class="file"
           v-model:showRight="showRight"
           :url="fileInfo.url"
           :name="fileInfo.name"
           :page="fileInfo.page"
-          @close="close"
+          @close="closeR"
       />
     </template>
   </MainAsideLayout>
@@ -90,6 +109,16 @@ const close = () => {
 </template>
 
 <style scoped>
+.knowledge-bar {
+  height: 10%;
+  width: 100%;
+}
+
+.knowledge-list {
+  height: 90%;
+  width: 100%;
+}
+
 .main {
   margin: auto;
   height: 100%;

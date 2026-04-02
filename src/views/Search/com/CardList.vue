@@ -1,12 +1,9 @@
 <template>
   <div class="card-list">
-    <div class="">
-
-    </div>
     <!-- 头部统计信息 -->
     <div class="list-header" v-if="documents.length > 0">
       <div class="stats">
-        <el-icon><Document /></el-icon>
+        <el-icon><DocumentCopy /></el-icon>
         <span>共找到 <strong>{{ documents.length }}</strong> 条相关结果</span>
       </div>
     </div>
@@ -41,7 +38,7 @@
 <script setup lang="ts">
 import Card from "@/views/Search/com/Card.vue";
 import type { Document } from "@/types/entity/Document";
-import {Check } from '@element-plus/icons-vue';
+import {Check,DocumentCopy  } from '@element-plus/icons-vue';
 
 defineProps<{
   documents: Document[]

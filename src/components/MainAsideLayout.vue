@@ -1,63 +1,102 @@
 <template>
   <div class="layout-container">
-    <!-- 左侧主内容 -->
+
+    <!-- 左侧侧边栏（受控显示隐藏 + 可调节宽度） -->
+    <div
+        class="aside-content"
+        :style="{ width: leftWidth + 'px' }"
+    >
+      <slot name="left" />
+    </div>
+
+    <!-- 拖动条 -->
+    <div
+        v-show="showLeftAside"
+        class="resize-handle"
+        @mousedown="startResizeL"
+    />
+
+    <!-- 主内容 -->
     <div class="main-content">
       <slot name="main" />
     </div>
 
     <!-- 拖动条 -->
     <div
+        v-show="showRightAside"
         class="resize-handle"
-        @mousedown="startResize"
+        @mousedown="startResizeR"
     />
 
     <!-- 右侧侧边栏（受控显示隐藏 + 可调节宽度） -->
     <div
         class="aside-content"
-        :style="{ width: asideWidth + 'px' }"
+        :style="{ width: rightWidth + 'px' }"
     >
-      <slot name="aside" />
+      <slot name="right" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {onUnmounted, ref, watch} from 'vue'
+import {onUnmounted, type Ref, ref, watch} from 'vue'
 
 const props = defineProps<{
-  showAside: boolean
+  showRightAside: boolean
+  showLeftAside: boolean
 }>()
 
 // 右侧面板初始宽度 & 最小宽度
-const asideWidth = ref(0)
-const MIN_WIDTH = 260
-const defaultWidth = 725
+const rightWidth = ref(0)
+const leftWidth = ref(0)
+const MIN_WIDTH = 300
+const defaultRightWidth = 725
+const defaultLeftWidth = 325
 
 // 拖动调节宽度逻辑
 let startX = 0
 let startWidth = 0
 
-const startResize = (e: MouseEvent) => {
+const startResizeR = (e: MouseEvent) => {
   startX = e.clientX
-  startWidth = asideWidth.value
-  document.addEventListener('mousemove', onMouseMove)
-  document.addEventListener('mouseup', stopResize)
+  startWidth = rightWidth.value
+  document.addEventListener('mousemove', onMouseMoveR)
+  document.addEventListener('mouseup', stopResizeR)
 }
 
-const onMouseMove = (e: MouseEvent) => {
+const onMouseMoveR = (e: MouseEvent) => {
   const width = startWidth - (e.clientX - startX)
   // 限制最小宽度，防止太窄
-  asideWidth.value = Math.max(MIN_WIDTH, width)
+  rightWidth.value = Math.max(MIN_WIDTH, width)
 }
 
-const stopResize = () => {
-  document.removeEventListener('mousemove', onMouseMove)
-  document.removeEventListener('mouseup', stopResize)
+const stopResizeR = () => {
+  document.removeEventListener('mousemove', onMouseMoveR)
+  document.removeEventListener('mouseup', stopResizeR)
 }
 
-let animationTimer: number | null = null
-// 监听侧边栏显示隐藏，平滑展开/收起
-watch(() => props.showAside, (newVal) => {
+const startResizeL = (e: MouseEvent) => {
+  startX = e.clientX
+  startWidth = leftWidth.value
+  document.addEventListener('mousemove', onMouseMoveL)
+  document.addEventListener('mouseup', stopResizeL)
+}
+
+const onMouseMoveL = (e: MouseEvent) => {
+  const width = startWidth + (e.clientX - startX)
+  // 限制最小宽度，防止太窄
+  leftWidth.value = Math.max(MIN_WIDTH, width)
+}
+
+const stopResizeL = () => {
+  document.removeEventListener('mousemove', onMouseMoveL)
+  document.removeEventListener('mouseup', stopResizeL)
+}
+
+let rightTimer: number | null = null
+let leftTimer: number | null = null
+const animateResize = (isShow: boolean, animationTimer: number | null,
+                       width:  Ref<number, number>, defaultWidth: number) => {
   // 清除旧定时器
   if (animationTimer) {
     clearInterval(animationTimer)
@@ -70,8 +109,8 @@ watch(() => props.showAside, (newVal) => {
   let currentStep = 0
 
   // 开始值 & 目标值
-  const startWidth = newVal ? 0 : asideWidth.value
-  const endWidth = newVal ? defaultWidth : 0
+  const startWidth = isShow ? 0 : width.value
+  const endWidth = isShow ? defaultWidth : 0
 
   // 缓动动画函数（ease-out 曲线：先快后慢，最自然）
   const animate = () => {
@@ -79,11 +118,11 @@ watch(() => props.showAside, (newVal) => {
     // 缓动曲线公式（先快后慢）
     const progress = 1 - Math.pow(1 - currentStep / steps, 3)
     // 计算当前宽度
-    asideWidth.value = startWidth + (endWidth - startWidth) * progress
+    width.value = startWidth + (endWidth - startWidth) * progress
 
     // 结束动画
     if (currentStep >= steps) {
-      asideWidth.value = endWidth
+      width.value = endWidth
       clearInterval(animationTimer!)
       animationTimer = null
     }
@@ -91,10 +130,21 @@ watch(() => props.showAside, (newVal) => {
 
   // 启动定时器
   animationTimer = window.setInterval(animate, stepTime)
+}
+// 监听侧边栏显示隐藏，平滑展开/收起
+watch(() => props.showRightAside, (newVal) => {
+  if (rightTimer) clearInterval(rightTimer)
+  animateResize(newVal, rightTimer, rightWidth, defaultRightWidth)
+})
+
+watch(() => props.showLeftAside, (newVal) => {
+  if (leftTimer) clearInterval(leftTimer)
+  animateResize(newVal, leftTimer, leftWidth, defaultLeftWidth)
 })
 
 onUnmounted(() => {
-  if (animationTimer) clearInterval(animationTimer)
+  if (rightTimer) clearInterval(rightTimer)
+  if (leftTimer) clearInterval(leftTimer)
 })
 </script>
 
