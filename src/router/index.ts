@@ -18,7 +18,6 @@ router.beforeEach((to, _from, next) => {
         next();
     } else {
         const token = localStorage.getItem('medrec_token');
-        console.log("medrec_token",  token)
         if (!token) {
             ElMessage.error('请先登录' as any);
             next('/login'); // 如果未登录，则跳转到登录页面

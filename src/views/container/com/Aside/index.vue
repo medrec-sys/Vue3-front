@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import {watch, ref, onMounted, onUnmounted} from 'vue';
-import {SIDEBAR_MENU_ITEMS} from '@/constant/SystemRouterConfig';
-import {useHomeStore} from '@/stores';
+import {useHomeStore} from "@/stores";
+import {SIDEBAR_MENU_ITEMS} from '@/constant/SystemRouterConfig'
+
 
 const homeStore = useHomeStore();
 
@@ -31,7 +32,7 @@ const weatherColors = {
 // 动态更新CSS变量
 watch(() => homeStore.weatherType, (newVal) => {
   const colors = weatherColors[newVal as keyof typeof weatherColors] || weatherColors.sunny;
-  document.documentElement.style.setProperty('--sidebar-bg-Start', colors[0]);
+  document.documentElement.style.setProperty('--sidebar-bg-start', colors[0]);
   document.documentElement.style.setProperty('--sidebar-bg-end', colors[1]);
 }, {immediate: true});
 
@@ -56,7 +57,7 @@ onUnmounted(() => {
             :class="{ active: homeStore.activeMenuItem === item.routePath }"
             @click="handleMenuItemClick(item.routePath)"
         >
-          <router-link    :to="item.routePath">
+          <router-link :to="item.routePath">
             <el-tooltip
                 effect="light"
                 :content="item.name"

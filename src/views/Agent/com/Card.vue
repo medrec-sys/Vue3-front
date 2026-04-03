@@ -1,10 +1,12 @@
 <template>
-  <div class="vector-card-wrapper">
+  <div
+      @click="click"
+      class="vector-card-wrapper">
     <el-card class="vector-card" shadow="hover" body-style="{ padding: '0px' }">
       <!-- 按钮区 -->
       <div class="card-buttons">
-        <el-button class="alert-btn" type="primary" round :icon="MoreFilled" @click="alertVector"></el-button>
-        <el-button class="delete-btn" type="primary" round :icon="Close" @click="deleteVector"></el-button>
+        <el-button class="alert-btn" type="primary" round :icon="MoreFilled" @click.stop="alertVector"></el-button>
+        <el-button class="delete-btn" type="primary" round :icon="Close" @click.stop="deleteVector"></el-button>
       </div>
 
       <div class="card-content">
@@ -37,14 +39,19 @@
 <script setup lang="ts">
 import {Close, MoreFilled} from '@element-plus/icons-vue'
 import {Collection} from '@element-plus/icons-vue'
-import {useAgentStore} from "@/stores";
 import {ElMessage, ElMessageBox} from "element-plus";
 import type {Agent} from "@/types/entity/Agent";
+import {ROUTE_PATHS} from "@/constant/SystemRouterConfig";
+import {useHomeStore, useAgentStore} from "@/stores";
+import {useRouter} from "vue-router";
+
 
 // 定义组件 props
 interface Props {
   agent: Agent
 }
+
+const router = useRouter();
 
 const props = defineProps<Props>()
 
@@ -55,6 +62,7 @@ interface Emits {
 
 const emit = defineEmits<Emits>()
 
+const homeStore = useHomeStore()
 const agentStore = useAgentStore()
 
 
@@ -82,6 +90,12 @@ const deleteVector = async () => {
 
 const alertVector = () => {
   emit('alert', props.agent)
+}
+
+const click = () => {
+  agentStore.usingAgent = props.agent
+  router.push(ROUTE_PATHS.CHAT)
+  homeStore.activeMenuItem = ROUTE_PATHS.CHAT
 }
 
 </script>

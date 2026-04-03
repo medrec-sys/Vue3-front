@@ -1,16 +1,22 @@
 <script setup lang="ts">
+import {useLoginStore} from "@/stores";
+
+const loginStore = useLoginStore()
 
 </script>
 
 <template>
-  <div class="center-box">
-    <router-link to="/personal">个人中心</router-link>
+  <div class="center-box"
+    @click="loginStore.logout()"
+  >
+    退出登录
   </div>
 
 </template>
 
 <style scoped>
 .center-box {
+  user-select: none;
   position: fixed;
   right: 20px;
   top: 15px;

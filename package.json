@@ -13,12 +13,14 @@
     "axios": "^1.9.0",
     "element-plus": "^2.9.9",
     "loglevel": "^1.9.2",
+    "markdown-it": "^14.1.1",
     "pinia": "^3.0.2",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@element-plus/theme-chalk": "^2.2.16",
+    "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.15.2",
     "@types/vue-router": "^2.0.0",
     "@vitejs/plugin-vue": "^5.2.3",

@@ -40,6 +40,7 @@ export const useLoginStore = defineStore('login', () => {
 
     // 退出登录
     const logout = () => {
+        console.log("退出登录")
         isLoggedIn.value = false;
         localStorage.removeItem('medrec_token');
 

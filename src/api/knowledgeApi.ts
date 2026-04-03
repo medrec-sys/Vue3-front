@@ -55,4 +55,11 @@ export const knowledgeApi = {
             data: knowledge,
         });
     },
+
+    getByVectorId(id: number): Promise<AxiosResponse<Result<Knowledge[]>>> {
+        return myAxios({
+            method: 'get',
+            url: `/api/knowledge/vector/${id}`,
+        });
+    }
 };

@@ -60,5 +60,13 @@ export const vectorApi = {
             url: `/api/vector/search/${vectorId}`,
             data: args,
         });
+    },
+
+    // 根据agent id获取向量
+    getByAgentId(agentId: number): Promise<AxiosResponse<Result<Vector[]>>> {
+        return myAxios({
+            method: 'get',
+            url: `/api/vector/agent/${agentId}`,
+        });
     }
 };

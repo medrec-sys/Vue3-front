@@ -22,6 +22,8 @@ export const useVectorStore = defineStore('vector', () => {
     const searchingVector = ref<Vector>({} as Vector)
     // 检索结果
     const documents = ref<Document[]>([])
+    // 根据agent id获取的向量
+    const vectorsWithAgentId = ref<Vector[]>([])
 
     // 创建向量
     const createVector = async (vector: Vector) => {
@@ -119,6 +121,13 @@ export const useVectorStore = defineStore('vector', () => {
         } finally {}
     }
 
+    // 通过 agent id获取向量
+    const getVectorsByAgentId = async (agentId: number) => {
+        const res = await vectorApi.getByAgentId(agentId)
+        vectorsWithAgentId.value = res.data.data
+        return res.data
+    }
+
     return {
         vectors,
         allVectors,
@@ -128,6 +137,7 @@ export const useVectorStore = defineStore('vector', () => {
         total,
         searchingVector,
         documents,
+        vectorsWithAgentId,
         search,
         createVector,
         fetchVector,
@@ -136,5 +146,6 @@ export const useVectorStore = defineStore('vector', () => {
         fetchAllVectors,
         fetchVectorPage,
         getVectorNameById,
+        getVectorsByAgentId
     };
 });

@@ -7,8 +7,8 @@
         :rows="4"
         resize="none"
         placeholder="请输入您的问题..."
-        @keyup.ctrl.enter="handleSearch"
         class="query-input"
+        @keyup.enter.exact="handleSearch"
     />
 
     <!-- 配置区域 -->

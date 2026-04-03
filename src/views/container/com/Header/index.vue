@@ -12,7 +12,7 @@ import Center from "./com/center.vue";
   <div class="header-container">
     <Weather initial-weather="sunny"/>
     <Cloud />
-    <Logo />
+<!--    <Logo />-->
     <Title />
     <Poster />
     <Center />

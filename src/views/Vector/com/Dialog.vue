@@ -96,14 +96,14 @@ const handleClose = () => {
   dialogVisible.value = false
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (props.isAddOrUpdate) {
-    add()
+    await add()
   } else {
-    update()
+    await update()
   }
   dialogVisible.value = false
-  vectorStore.fetchVectorPage()
+  await vectorStore.fetchVectorPage()
 }
 
 const add = async () => {

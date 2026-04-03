@@ -50,10 +50,26 @@ watch(() => homeStore.weatherType, (newVal) => {
           <h2>系统功能</h2>
           <div class="features-grid">
             <div class="feature-card" v-for="(feature, index) in [
-          {icon: '📚', title: '单词学习', desc: '提供四级、六级和通用单词库，支持多种学习模式'},
-          {icon: '📝', title: '智能测试', desc: '自动生成试卷，包含选择题、填空题和阅读理解题'},
-          {icon: '🔍', title: '错题管理', desc: '记录错题，提供针对性练习，帮助巩固薄弱环节'},
-          {icon: '🤖', title: 'AI助手', desc: '基于PDF的AI问答系统，提供个性化学习建议'}
+       {
+          icon: '📚',
+          title: '知识库管理',
+          desc: '管理向量知识库，支持文档上传、分块存储，构建个人知识体系'
+        },
+        {
+          icon: '🤖',
+          title: 'AI智能体',
+          desc: '配置智能体参数（温度、TopK、相似度阈值），定制个性化AI助手'
+        },
+        {
+          icon: '🔍',
+          title: '知识检索',
+          desc: '基于向量相似度搜索，智能匹配相关知识块，支持相似度阈值过滤'
+        },
+        {
+          icon: '💬',
+          title: '智能对话',
+          desc: '多轮对话交互，基于知识库的AI问答系统，提供精准回答'
+        }
         ]" :key="index">
               <div class="feature-icon">{{ feature.icon }}</div>
               <h3>{{ feature.title }}</h3>

@@ -146,6 +146,8 @@ const showFile = ( document: Document) => {
 }
 
 .text {
+  user-select: text;
+
   line-height: 1.8;
   color: #2c3e50;
   margin: 0;

@@ -17,6 +17,8 @@ export const useAgentStore = defineStore('agent', () => {
     });
     const loading = ref(false);
 
+    const usingAgent = ref<Agent>({} as any);
+
     // 创建Agent
     const createAgent = async (agent: Agent) => {
         loading.value = true;
@@ -97,10 +99,10 @@ export const useAgentStore = defineStore('agent', () => {
     };
 
     // 添加知识库到Agent
-    const addVectorToAgent = async (agentId: number, vectorId: number) => {
+    const addVectorToAgent = async (vectorId: number) => {
         loading.value = true;
         try {
-            const res = await agentApi.addVector(agentId, vectorId);
+            const res = await agentApi.addVector(usingAgent.value.id, vectorId);
             return res.data;
         } finally {
             loading.value = false;
@@ -108,10 +110,10 @@ export const useAgentStore = defineStore('agent', () => {
     };
 
     // 从Agent移除知识库
-    const removeVectorFromAgent = async (agentId: number, vectorId: number) => {
+    const removeVectorFromAgent = async (vectorId: number) => {
         loading.value = true;
         try {
-            const res = await agentApi.deleteVector(agentId, vectorId);
+            const res = await agentApi.deleteVector(usingAgent.value.id, vectorId);
             return res.data;
         } finally {
             loading.value = false;
@@ -131,6 +133,7 @@ export const useAgentStore = defineStore('agent', () => {
         loading,
         pageQuery,
         total,
+        usingAgent,
         createAgent,
         fetchAgent,
         updateAgent,

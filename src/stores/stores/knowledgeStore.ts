@@ -102,6 +102,11 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
         return knowledge?.name || '';
     };
 
+    const getKnowledgeByVectorId = async (id: number) => {
+        const res = await knowledgeApi.getByVectorId( id)
+        return res.data
+    };
+
     return {
         knowledges,
         allKnowledges,
@@ -116,5 +121,6 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
         fetchAllKnowledges,
         fetchKnowledgePage,
         getKnowledgeNameById,
+        getKnowledgeByVectorId,
     };
 });

@@ -4,7 +4,7 @@
     <div class="bar-center">
       <el-input
           v-model="knowledgeStore.pageQuery.query.name"
-          placeholder="搜索知识库名称..."
+          placeholder="搜索文档名称..."
           clearable
           prefix-icon="Search"
           size="default"
