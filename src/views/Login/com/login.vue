@@ -25,33 +25,36 @@ const registerFormRef = ref<FormInstance>()
 
 // 表单规则
 const loginRules = reactive<FormRules>({
-  // account: [
-  //   {required: true, message: '请输入账号', trigger: 'blur'},
-  //   {min: 4, max: 16, message: '长度在4到16个字符', trigger: 'blur'}
-  // ],
-  // password: [
-  //   {required: true, message: '请输入密码', trigger: 'blur'},
-  //   {min: 5, max: 20, message: '长度在5到20个字符', trigger: 'blur'}
-  // ]
+  account: [
+    { required: true, message: '请输入账号', trigger: 'blur' },
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+  ]
 })
 
 const registerRules = reactive<FormRules>({
-  // account: [
-  //   {required: true, message: '请输入账号', trigger: 'blur'},
-  //   {min: 4, max: 16, message: '长度在4到16个字符', trigger: 'blur'}
-  // ],
-  // username: [
-  //   {required: true, message: '请输入用户名', trigger: 'blur'},
-  //   {min: 2, max: 16, message: '长度在2到16个字符', trigger: 'blur'}
-  // ],
-  // password: [
-  //   {required: true, message: '请输入密码', trigger: 'blur'},
-  //   {min: 5, max: 20, message: '长度在5到20个字符', trigger: 'blur'},
-  //   {pattern: /^(?=.*[A-Za-z])(?=.*\d).+$/, message: '必须包含字母和数字', trigger: 'blur'}
-  // ],
+  account: [
+    { required: true, message: '请输入账号', trigger: 'blur' },
+    { min: 4, max: 20, message: '账号长度4-20位', trigger: 'blur' },
+    { pattern: /^[a-zA-Z0-9_]+$/, message: '账号只能包含字母、数字、下划线', trigger: 'blur' }
+  ],
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 2, max: 20, message: '用户名长度2-20位', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '密码长度6-20位', trigger: 'blur' },
+    {
+      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9!@#$%^&*]{6,20}$/,
+      message: '密码必须包含大小写字母和数字，可包含特殊字符',
+      trigger: 'blur'
+    }
+  ],
   password2: [
-    {required: true, message: '请再次输入密码', trigger: 'blur'},
-    {validator: validatePassword2, trigger: 'blur'}
+    { required: true, message: '请再次输入密码', trigger: 'blur' },
+    { validator: validatePassword2, trigger: 'blur' }
   ]
 })
 

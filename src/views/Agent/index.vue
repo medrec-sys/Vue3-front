@@ -41,6 +41,7 @@ const add = () => {
 <template>
   <div class="main">
     <Dialog
+        class="agent-dialog"
         v-model:modelValue="dialogVisible"
         v-model:data="dialogAgent"
         :isAddOrUpdate="isAddOrUpdate"
@@ -63,6 +64,9 @@ const add = () => {
 </template>
 
 <style scoped>
+
+
+
 .main {
   display: flex;
   flex-direction: column;

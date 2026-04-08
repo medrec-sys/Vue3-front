@@ -6,7 +6,7 @@ interface ChatHttpRequest {
 }
 
 async function myFetch(obj: ChatHttpRequest): Promise<Response> {
-    const http = 'http://localhost:8080';
+    const http = 'http://localhost:9016';
     // 解构赋值（添加类型注解）
     const {method, url, params, data} = obj;
 
