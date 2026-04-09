@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { loginApi } from '@/api/loginApi';
-import { useRouter } from 'vue-router';
 import logger from "@/utils/logger";
 
 export const useLoginStore = defineStore('login', () => {
@@ -43,10 +42,6 @@ export const useLoginStore = defineStore('login', () => {
         console.log("退出登录")
         isLoggedIn.value = false;
         localStorage.removeItem('medrec_token');
-
-        // 可选：跳转到登录页
-        const router = useRouter();
-        router.push('/login');
     };
 
     // 检查登录状态

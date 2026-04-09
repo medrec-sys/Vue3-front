@@ -97,32 +97,51 @@ const handleShowKnowledge = () => {
 };
 </script>
 
+// Input.vue (Search 页面的输入组件)
 <style scoped>
 .search-input {
   width: 100%;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  transition: all 0.3s ease;
+}
+
+.search-input:hover {
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.1);
+  border-color: rgba(102, 126, 234, 0.2);
 }
 
 .query-input :deep(.el-textarea__inner) {
-  border-radius: 12px;
-  border: 1px solid #e2e6eb;
+  border-radius: 20px;
+  border: 1.5px solid #e4e7ed;
   font-size: 14px;
-  transition: all 0.2s;
+  transition: all 0.3s;
+  background: #fafbfc;
+  font-family: inherit;
+  padding: 14px 16px;
+}
+
+.query-input :deep(.el-textarea__inner):hover {
+  border-color: #c0c4cc;
+  background: white;
 }
 
 .query-input :deep(.el-textarea__inner):focus {
-  border-color: #409eff;
-  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.1);
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: white;
 }
 
 .config {
   display: flex;
   align-items: center;
   gap: 20px;
-  margin-top: 6px;
-  padding: 0 4px 5px;
+  margin-top: 12px;
+  padding: 0 8px 12px;
+  flex-wrap: wrap;
 }
 
 .config-item {
@@ -133,42 +152,107 @@ const handleShowKnowledge = () => {
 
 .label {
   font-size: 13px;
+  font-weight: 500;
   color: #606266;
   white-space: nowrap;
 }
 
 .threshold {
   flex: 1;
+  min-width: 200px;
 }
 
 .value {
   font-size: 13px;
-  color: #409eff;
-  font-weight: 500;
+  font-weight: 600;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   min-width: 36px;
 }
 
-.query-input :deep(.el-textarea__inner) {
-  padding: 12px 10px;
-
-}
-
 .knowledge-btn {
-  background: rgba(64, 158, 255, 0.1);
-  border: 1px solid rgba(64, 158, 255, 0.2);
-  color: #409eff;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  color: #667eea;
   transition: all 0.3s ease;
 }
 
 .knowledge-btn:hover {
-  background: #409eff;
-  border-color: #409eff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
   color: white;
   transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
 }
 
 .knowledge-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
+}
+
+/* 滑动条样式优化 */
+.config-item :deep(.el-slider__runway) {
+  background: #e4e7ed;
+}
+
+.config-item :deep(.el-slider__bar) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.config-item :deep(.el-slider__button) {
+  border-color: #667eea;
+}
+
+/* 数字输入框优化 */
+.config-item :deep(.el-input-number) {
+  width: 100px;
+}
+
+.config-item :deep(.el-input-number .el-input__wrapper) {
+  border-radius: 12px;
+}
+
+.config-item :deep(.el-input-number .el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+  border-color: #667eea;
+}
+
+/* 查询按钮 */
+.config :deep(.el-button--primary) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 8px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.config :deep(.el-button--primary):hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, #7c8ef0 0%, #8a5bb8 100%);
+}
+
+.config :deep(.el-button--primary):active {
+  transform: translateY(0);
+}
+
+.config :deep(.el-button--primary.is-disabled) {
+  background: linear-gradient(135deg, #cbd5e0 0%, #e2e8f0 100%);
+}
+
+@media (max-width: 768px) {
+  .config {
+    gap: 12px;
+  }
+
+  .threshold {
+    min-width: 160px;
+  }
+
+  .label {
+    font-size: 12px;
+  }
 }
 </style>

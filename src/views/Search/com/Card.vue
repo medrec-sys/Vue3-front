@@ -56,14 +56,21 @@ const showFile = ( document: Document) => {
 };
 
 </script>
-
+// Card.vue
 <style scoped>
 .document-card {
   width: 100%;
   margin-bottom: 16px;
-  transition: all 0.3s ease;
-  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
   overflow: hidden;
+  border: 1px solid rgba(102, 126, 234, 0.08);
+}
+
+.document-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.12);
+  border-color: rgba(102, 126, 234, 0.2);
 }
 
 .document-card :deep(.el-card__header) {
@@ -82,7 +89,7 @@ const showFile = ( document: Document) => {
   align-items: center;
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #f0f2f5;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.08);
 }
 
 /* 左侧元数据 */
@@ -97,17 +104,19 @@ const showFile = ( document: Document) => {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 10px;
-  background: #f5f7fa;
+  padding: 4px 12px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);
   border-radius: 20px;
   font-size: 12px;
+  font-weight: 500;
   color: #5a6874;
   transition: all 0.2s ease;
 }
 
 .meta-badge:hover {
-  background: #ecf5ff;
-  color: #409eff;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  color: #667eea;
+  transform: translateY(-1px);
 }
 
 .meta-badge .el-icon {
@@ -115,29 +124,30 @@ const showFile = ( document: Document) => {
 }
 
 .meta-badge.distance {
-  background: linear-gradient(135deg, #e8f5e9 0%, #e0f2e9 100%);
-  color: #2e7d32;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.08) 100%);
+  color: #667eea;
 }
 
 .meta-badge.distance .el-icon {
-  color: #4caf50;
+  color: #667eea;
 }
 
 /* 右侧链接按钮 */
 .link-btn {
   transition: all 0.3s ease;
-  background: linear-gradient(135deg, #409eff 0%, #337ecc 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
-  box-shadow: 0 2px 6px rgba(64, 158, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .link-btn:hover {
-  transform: translateX(2px) rotate(5deg);
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.4);
+  transform: translateX(2px) rotate(5deg) scale(1.05);
+  box-shadow: 0 4px 14px rgba(102, 126, 234, 0.45);
+  background: linear-gradient(135deg, #7c8ef0 0%, #8a5bb8 100%);
 }
 
 .link-btn:active {
-  transform: translateX(1px) rotate(3deg);
+  transform: translateX(1px) rotate(3deg) scale(0.98);
 }
 
 /* 文档主体内容 */
@@ -147,7 +157,6 @@ const showFile = ( document: Document) => {
 
 .text {
   user-select: text;
-
   line-height: 1.8;
   color: #2c3e50;
   margin: 0;
@@ -165,13 +174,13 @@ const showFile = ( document: Document) => {
   }
 
   .meta-badge {
-    padding: 2px 8px;
+    padding: 3px 10px;
     font-size: 11px;
   }
 
   .text {
     font-size: 13px;
-    line-height: 1.6;
+    line-height: 1.65;
   }
 }
 </style>

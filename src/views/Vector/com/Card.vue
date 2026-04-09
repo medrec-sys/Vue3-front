@@ -101,11 +101,12 @@ const alertVector = () => {
 }
 
 </script>
-
+// Card.vue
 <style scoped>
 .vector-card-wrapper {
-  width: 260px;
-  height: 260px;
+  width: 100%;
+  max-width: 280px;
+  height: 280px;
 }
 
 .vector-card {
@@ -115,15 +116,15 @@ const alertVector = () => {
   transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
   cursor: pointer;
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  border: 1px solid rgba(100, 108, 255, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.1);
   position: relative;
   overflow: hidden;
 }
 
 .vector-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2);
-  border-color: rgba(100, 108, 255, 0.3);
+  box-shadow: 0 20px 35px -12px rgba(102, 126, 234, 0.25);
+  border-color: rgba(102, 126, 234, 0.3);
 }
 
 .card-content {
@@ -136,7 +137,6 @@ const alertVector = () => {
   padding: 24px;
   box-sizing: border-box;
   z-index: 2;
-  backdrop-filter: blur(0px);
 }
 
 /* 装饰性背景光晕 */
@@ -146,7 +146,7 @@ const alertVector = () => {
   left: -20%;
   width: 140%;
   height: 140%;
-  background: radial-gradient(circle at 30% 20%, rgba(100, 108, 255, 0.08), transparent 70%);
+  background: radial-gradient(circle at 30% 20%, rgba(102, 126, 234, 0.1), transparent 70%);
   opacity: 0;
   transition: opacity 0.6s ease;
   pointer-events: none;
@@ -163,19 +163,20 @@ const alertVector = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--el-color-primary-light-8) 0%, var(--el-color-primary-light-9) 100%);
-  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.12) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border-radius: 22px;
   margin-bottom: 20px;
-  color: var(--el-color-primary);
+  color: #667eea;
   transition: all 0.3s ease;
   position: relative;
 }
 
 .vector-card:hover .card-icon {
   transform: scale(1.05);
-  border-radius: 24px;
-  background: linear-gradient(135deg, var(--el-color-primary-light-7) 0%, var(--el-color-primary-light-8) 100%);
-  box-shadow: 0 8px 20px -8px rgba(100, 108, 255, 0.4);
+  border-radius: 26px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.15) 100%);
+  box-shadow: 0 8px 20px -8px rgba(102, 126, 234, 0.4);
+  color: #764ba2;
 }
 
 .card-info {
@@ -186,22 +187,25 @@ const alertVector = () => {
 .card-name {
   font-size: 17px;
   font-weight: 600;
-  color: var(--el-text-color-primary);
+  color: #2c3e50;
   margin-bottom: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   letter-spacing: -0.2px;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .vector-card:hover .card-name {
-  color: var(--el-color-primary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .card-description {
   font-size: 13px;
-  color: var(--el-text-color-secondary);
+  color: #909399;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -212,15 +216,19 @@ const alertVector = () => {
   transition: color 0.2s ease;
 }
 
+.vector-card:hover .card-description {
+  color: #606266;
+}
+
 /* 底部装饰线 */
 .card-footer-line {
   position: absolute;
-  bottom: 16px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   width: 30px;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--el-color-primary), transparent);
+  background: linear-gradient(90deg, transparent, #667eea, #764ba2, transparent);
   border-radius: 2px;
   opacity: 0;
   transition: all 0.3s ease;
@@ -228,45 +236,7 @@ const alertVector = () => {
 
 .vector-card:hover .card-footer-line {
   opacity: 0.6;
-  width: 50px;
-}
-
-/* 深色模式适配 */
-@media (prefers-color-scheme: dark) {
-  .vector-card {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    border-color: rgba(100, 108, 255, 0.2);
-  }
-
-  .card-icon {
-    background: linear-gradient(135deg, rgba(100, 108, 255, 0.2) 0%, rgba(100, 108, 255, 0.1) 100%);
-  }
-
-  .vector-card:hover .card-icon {
-    background: linear-gradient(135deg, rgba(100, 108, 255, 0.3) 0%, rgba(100, 108, 255, 0.2) 100%);
-  }
-}
-
-/* 响应式适配 */
-@media (max-width: 768px) {
-  .vector-card-wrapper {
-    width: 200px;
-    height: 200px;
-  }
-
-  .card-icon {
-    width: 55px;
-    height: 55px;
-    margin-bottom: 14px;
-  }
-
-  .card-name {
-    font-size: 14px;
-  }
-
-  .card-description {
-    font-size: 11px;
-  }
+  width: 60px;
 }
 
 /* 按钮组容器 - 定位到右上角 */
@@ -277,44 +247,155 @@ const alertVector = () => {
   display: flex;
   gap: 8px;
   z-index: 10;
-}
-
-/* 按钮通用样式 */
-.delete-btn,
-.alert-btn {
-  background: rgba(0, 0, 0, 0.06);
-  border: none;
-  width: 28px;
-  height: 28px;
-  padding: 0 !important;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: #606266;
-}
-
-/* 删除按钮悬停效果 */
-.delete-btn:hover {
-  background: #f56c6c;
-  color: white;
-}
-
-/* 警告/更多按钮悬停效果 */
-.alert-btn:hover {
-  background: #409eff;
-  color: white;
-}
-
-/* 可选：默认隐藏，悬停显示 */
-.card-buttons {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .vector-card:hover .card-buttons {
   opacity: 1;
+}
+
+/* 按钮通用样式 */
+.delete-btn,
+.alert-btn {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  border: none;
+  width: 30px;
+  height: 30px;
+  padding: 0 !important;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: #606266;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* 删除按钮悬停效果 */
+.delete-btn:hover {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(245, 87, 108, 0.3);
+}
+
+/* 警告/更多按钮悬停效果 */
+.alert-btn:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+}
+
+.delete-btn:active,
+.alert-btn:active {
+  transform: scale(0.95);
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .vector-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-color: rgba(102, 126, 234, 0.2);
+  }
+
+  .card-icon {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.1) 100%);
+  }
+
+  .vector-card:hover .card-icon {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.2) 100%);
+  }
+
+  .card-name {
+    color: #e5e5e5;
+  }
+
+  .card-description {
+    color: #8a8a8a;
+  }
+
+  .delete-btn,
+  .alert-btn {
+    background: rgba(30, 30, 30, 0.9);
+    color: #c0c4cc;
+  }
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .vector-card-wrapper {
+    max-width: 220px;
+    height: 220px;
+  }
+
+  .card-icon {
+    width: 55px;
+    height: 55px;
+    margin-bottom: 14px;
+  }
+
+  .card-icon .el-icon {
+    font-size: 26px !important;
+  }
+
+  .card-name {
+    font-size: 14px;
+  }
+
+  .card-description {
+    font-size: 11px;
+    -webkit-line-clamp: 2;
+  }
+
+  .card-buttons {
+    top: 8px;
+    right: 8px;
+    gap: 6px;
+  }
+
+  .delete-btn,
+  .alert-btn {
+    width: 26px;
+    height: 26px;
+  }
+
+  .card-footer-line {
+    bottom: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .vector-card-wrapper {
+    max-width: 180px;
+    height: 180px;
+  }
+
+  .card-content {
+    padding: 16px;
+  }
+
+  .card-icon {
+    width: 45px;
+    height: 45px;
+    margin-bottom: 10px;
+  }
+
+  .card-icon .el-icon {
+    font-size: 22px !important;
+  }
+
+  .card-name {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .card-description {
+    font-size: 10px;
+    -webkit-line-clamp: 1;
+  }
 }
 </style>

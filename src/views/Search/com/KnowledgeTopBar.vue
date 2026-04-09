@@ -67,24 +67,23 @@ const handleAdd = async (file: { raw: File }) => {
   }
 }
 </script>
-
+// KnowledgeTopBar.vue
 <style scoped>
 .knowledge-top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 16px 20px;
-  background: #ffffff;
-  border-bottom: 1px solid #e4e7ed;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(102, 126, 234, 0.1);
 }
-
 
 /* 中间区域 */
 .bar-center {
   flex: 1;
-  max-width: 400px;
+  max-width: 450px;
   min-width: 200px;
 }
 
@@ -93,32 +92,38 @@ const handleAdd = async (file: { raw: File }) => {
 }
 
 .search-input :deep(.el-input__wrapper) {
-  border-radius: 8px 0 0 8px;
-  box-shadow: 0 0 0 1px #dcdfe6 inset;
+  border-radius: 14px 0 0 14px;
+  box-shadow: 0 0 0 1px #e4e7ed inset;
   transition: all 0.3s ease;
 }
 
 .search-input :deep(.el-input__wrapper):hover {
-  box-shadow: 0 0 0 1px #409eff inset;
+  box-shadow: 0 0 0 1px #667eea inset;
 }
 
 .search-input :deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 1px #409eff inset;
+  box-shadow: 0 0 0 1px #667eea inset, 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.search-input :deep(.el-input__inner) {
+  font-size: 14px;
 }
 
 .search-btn {
-  border-radius: 0 8px 8px 0;
-  background: #f5f7fa;
-  border: 1px solid #dcdfe6;
+  border-radius: 0 14px 14px 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);
+  border: 1px solid #e4e7ed;
   border-left: none;
   color: #606266;
   transition: all 0.3s ease;
+  font-weight: 500;
 }
 
 .search-btn:hover {
-  background: #409eff;
-  border-color: #409eff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
   color: white;
+  transform: translateX(2px);
 }
 
 /* 右侧区域 */
@@ -127,23 +132,27 @@ const handleAdd = async (file: { raw: File }) => {
 }
 
 .add-btn {
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-weight: 500;
-  background: linear-gradient(135deg, #409eff 0%, #66b1ff 100%);
+  border-radius: 14px;
+  padding: 10px 20px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(64, 158, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
 }
 
 .add-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.4);
-  background: linear-gradient(135deg, #66b1ff 0%, #409eff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.45);
+  background: linear-gradient(135deg, #7c8ef0 0%, #8a5bb8 100%);
 }
 
 .add-btn:active {
   transform: translateY(0);
+}
+
+.add-btn :deep(.el-icon) {
+  font-size: 18px;
 }
 
 /* 响应式设计 */
@@ -164,5 +173,4 @@ const handleAdd = async (file: { raw: File }) => {
     justify-content: center;
   }
 }
-
 </style>

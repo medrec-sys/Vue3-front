@@ -1,16 +1,19 @@
+<!-- VectorCard.vue -->
 <template>
   <div class="vector-card">
-    <!-- 卡片头部：向量库信息 -->
     <div class="card-header" @click="toggleDocs">
       <div class="header-left">
-        <el-icon :class="{ 'is-open': isDocsVisible }">
+        <el-icon :class="{ 'is-open': isDocsVisible }" class="expand-icon">
           <ArrowRight />
         </el-icon>
         <span class="vector-name">{{ vector.name }}</span>
         <el-tag size="small" type="info" class="dim-tag">维度: {{ vector.dim }}</el-tag>
       </div>
       <div class="header-right">
-        <span class="docs-count">{{ knowledges.length }} 个文档</span>
+        <span class="docs-count">
+          <el-icon><Document /></el-icon>
+          {{ knowledges.length }}
+        </span>
         <el-button
             class="delete-btn"
             :icon="Delete"
@@ -23,23 +26,24 @@
       </div>
     </div>
 
-    <!-- 可收缩的文档列表 -->
     <el-collapse-transition>
       <div v-show="isDocsVisible" class="docs-wrapper">
-        <!-- 分割线 -->
         <div class="divider"></div>
 
-        <!-- 空状态 -->
         <div v-if="knowledges.length === 0" class="empty-docs">
-          <el-empty description="暂无关联文档" :image-size="60" />
+          <el-empty description="暂无关联文档" :image-size="60">
+            <template #image>
+              <el-icon :size="60" color="#cbd5e1"><Document /></el-icon>
+            </template>
+          </el-empty>
         </div>
 
-        <!-- 文档列表（类书籍目录） -->
         <div v-else class="docs-container">
           <div
-              v-for="(doc, _index) in knowledges"
+              v-for="(doc, index) in knowledges"
               :key="doc.id"
               class="doc-item"
+              :style="{ animationDelay: `${index * 0.03}s` }"
           >
             <div class="doc-icon">
               <el-icon><Document /></el-icon>
@@ -47,8 +51,8 @@
             <div class="doc-info">
               <div class="doc-name">{{ doc.name }}</div>
               <div class="doc-meta">
-                <span class="chunk-info">分块数: {{ doc.chunk }}</span>
-                <span class="time-info">{{ formatDate(doc.createTime) }}</span>
+                <span class="chunk-info">📄 {{ doc.chunk }} 个分块</span>
+                <span class="time-info">🕒 {{ formatDate(doc.createTime) }}</span>
               </div>
             </div>
             <div class="link-right" v-if="doc.path">
@@ -57,7 +61,7 @@
                   :icon="Link"
                   circle
                   class="link-btn"
-                  @click="showFile(doc)"
+                  @click.stop="showFile(doc)"
               />
             </div>
           </div>
@@ -80,7 +84,7 @@ const props = defineProps<{
 }>();
 
 interface Emits {
-  (e: 'remove', vector:  Vector): void,
+  (e: 'remove', vector: Vector): void,
   (e: 'showFile', doc: Knowledge): void
 }
 
@@ -117,6 +121,7 @@ const handleRemove = async () => {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
+          customClass: 'custom-message-box'
         }
     )
     emit('remove', props.vector)
@@ -133,14 +138,17 @@ const showFile = (doc: Knowledge) => {
 <style scoped lang="scss">
 .vector-card {
   background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-bottom: 12px;
   overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.04);
 
   &:hover {
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+    border-color: rgba(102, 126, 234, 0.2);
   }
 }
 
@@ -148,71 +156,89 @@ const showFile = (doc: Knowledge) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
+  padding: 14px 18px;
   background: #ffffff;
   cursor: pointer;
   user-select: none;
-  transition: background 0.2s;
+  transition: all 0.2s;
 
   &:hover {
-    background: #fafbfc;
+    background: linear-gradient(135deg, #fafbfc 0%, #ffffff 100%);
+
+    .expand-icon {
+      color: #667eea;
+    }
   }
 
   .header-left {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     flex: 1;
 
-    .el-icon {
+    .expand-icon {
       font-size: 14px;
-      transition: transform 0.2s ease;
-      color: #909399;
+      transition: all 0.3s ease;
+      color: #c0c4cc;
 
       &.is-open {
         transform: rotate(90deg);
+        color: #667eea;
       }
     }
 
     .vector-name {
-      font-size: 14px;
-      font-weight: 500;
-      color: #303133;
+      font-size: 15px;
+      font-weight: 600;
+      color: #2c3e50;
+      transition: color 0.2s;
     }
 
     .dim-tag {
-      background: #ecf5ff;
-      border-color: #d9ecff;
+      background: linear-gradient(135deg, #ecf5ff 0%, #e8f0fe 100%);
+      border: none;
       color: #409eff;
       font-size: 11px;
-      padding: 0 6px;
-      height: 20px;
-      line-height: 18px;
+      padding: 0 10px;
+      height: 22px;
+      line-height: 20px;
+      border-radius: 12px;
+      font-weight: 500;
     }
   }
 
   .header-right {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
 
     .docs-count {
       font-size: 12px;
       color: #909399;
       background: #f0f2f5;
-      padding: 2px 8px;
-      border-radius: 10px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+
+      .el-icon {
+        font-size: 12px;
+      }
     }
 
     .delete-btn {
-      padding: 4px;
+      padding: 6px;
       font-size: 14px;
-      opacity: 0.6;
+      opacity: 0.5;
       transition: all 0.2s ease;
+      background: transparent;
 
       &:hover {
         opacity: 1;
-        transform: scale(1.05);
+        transform: scale(1.1);
+        background: rgba(245, 108, 108, 0.1);
       }
 
       &:active {
@@ -229,11 +255,11 @@ const showFile = (doc: Knowledge) => {
 .divider {
   height: 1px;
   background: linear-gradient(90deg, #e4e7ed 0%, #e4e7ed 85%, transparent 100%);
-  margin: 0 16px;
+  margin: 0 18px;
 }
 
 .docs-container {
-  max-height: 280px;
+  max-height: 320px;
   overflow-y: auto;
   padding: 4px 0;
 
@@ -243,11 +269,12 @@ const showFile = (doc: Knowledge) => {
 
   &::-webkit-scrollbar-track {
     background: #f5f5f5;
+    border-radius: 4px;
   }
 
   &::-webkit-scrollbar-thumb {
     background: #dcdfe6;
-    border-radius: 2px;
+    border-radius: 4px;
 
     &:hover {
       background: #c0c4cc;
@@ -258,20 +285,23 @@ const showFile = (doc: Knowledge) => {
 .doc-item {
   display: flex;
   align-items: center;
-  padding: 8px 16px;
-  transition: all 0.15s ease;
+  padding: 10px 18px;
+  transition: all 0.2s ease;
   cursor: default;
+  animation: slideIn 0.3s ease-out backwards;
 
   &:hover {
-    background: #fafbfc;
+    background: linear-gradient(135deg, #fafbfc 0%, #f5f7fa 100%);
+    padding-left: 22px;
   }
 
   .doc-icon {
-    margin-right: 10px;
+    margin-right: 12px;
     color: #c0c4cc;
-    font-size: 16px;
+    font-size: 18px;
     display: flex;
     align-items: center;
+    transition: color 0.2s;
   }
 
   .doc-info {
@@ -279,201 +309,130 @@ const showFile = (doc: Knowledge) => {
     min-width: 0;
 
     .doc-name {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 500;
-      color: #303133;
-      margin-bottom: 2px;
+      color: #2c3e50;
+      margin-bottom: 4px;
       line-height: 1.4;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      transition: color 0.2s;
     }
 
     .doc-meta {
       display: flex;
-      gap: 12px;
+      gap: 16px;
       font-size: 11px;
       color: #909399;
 
-      .chunk-info {
-        &::before {
-          content: "📄";
-          margin-right: 3px;
-          font-size: 10px;
-        }
-      }
-
-      .time-info {
-        &::before {
-          content: "🕒";
-          margin-right: 3px;
-          font-size: 10px;
-        }
+      .chunk-info, .time-info {
+        display: flex;
+        align-items: center;
+        gap: 4px;
       }
     }
+  }
+
+  &:hover .doc-icon {
+    color: #667eea;
+  }
+
+  &:hover .doc-info .doc-name {
+    color: #667eea;
   }
 }
 
 .empty-docs {
-  padding: 20px 16px;
+  padding: 24px 18px;
 }
 
-// 加载状态样式（如果需要）
-.loading-state {
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.link-btn {
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+
+  &:hover {
+    transform: translateX(2px) scale(1.05);
+    box-shadow: 0 4px 14px rgba(102, 126, 234, 0.4);
+  }
+
+  &:active {
+    transform: translateX(1px) scale(0.98);
+  }
 }
 
-// 响应式设计
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @media (max-width: 768px) {
+  .vector-card {
+    border-radius: 14px;
+  }
+
   .card-header {
-    padding: 10px 12px;
+    padding: 12px 14px;
 
     .header-left {
-      gap: 6px;
+      gap: 8px;
 
       .vector-name {
-        font-size: 13px;
+        font-size: 14px;
       }
 
       .dim-tag {
         font-size: 10px;
-        padding: 0 4px;
-        height: 18px;
-        line-height: 16px;
+        padding: 0 6px;
+        height: 20px;
+        line-height: 18px;
       }
     }
 
     .header-right {
-      gap: 6px;
+      gap: 8px;
 
       .docs-count {
         font-size: 11px;
-        padding: 2px 6px;
+        padding: 2px 8px;
+
+        .el-icon {
+          font-size: 11px;
+        }
       }
 
       .delete-btn {
-        padding: 3px;
+        padding: 4px;
         font-size: 12px;
       }
     }
   }
 
   .doc-item {
-    padding: 6px 12px;
+    padding: 8px 14px;
 
     .doc-info {
       .doc-name {
-        font-size: 12px;
+        font-size: 13px;
       }
 
       .doc-meta {
-        gap: 8px;
+        gap: 12px;
         font-size: 10px;
       }
     }
   }
 
   .docs-container {
-    max-height: 240px;
+    max-height: 280px;
   }
-}
-
-// 暗色模式支持（如果需要）
-@media (prefers-color-scheme: dark) {
-  .vector-card {
-    background: #1e1e1e;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
-
-    &:hover {
-      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);
-    }
-  }
-
-  .card-header {
-    background: #1e1e1e;
-
-    &:hover {
-      background: #2d2d2d;
-    }
-
-    .header-left {
-      .vector-name {
-        color: #e5e5e5;
-      }
-
-      .el-icon {
-        color: #6b6b6b;
-      }
-    }
-
-    .header-right {
-      .docs-count {
-        color: #6b6b6b;
-        background: #2d2d2d;
-      }
-    }
-  }
-
-  .docs-wrapper {
-    background: #1e1e1e;
-  }
-
-  .divider {
-    background: linear-gradient(90deg, #3a3a3a 0%, #3a3a3a 85%, transparent 100%);
-  }
-
-  .doc-item {
-    &:hover {
-      background: #2d2d2d;
-    }
-
-    .doc-icon {
-      color: #6b6b6b;
-    }
-
-    .doc-info {
-      .doc-name {
-        color: #e5e5e5;
-      }
-
-      .doc-meta {
-        color: #6b6b6b;
-      }
-    }
-  }
-
-  .docs-container {
-    &::-webkit-scrollbar-track {
-      background: #2d2d2d;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #4a4a4a;
-
-      &:hover {
-        background: #5a5a5a;
-      }
-    }
-  }
-}
-
-/* 右侧链接按钮 */
-.link-btn {
-  transition: all 0.3s ease;
-  background: linear-gradient(135deg, #409eff 0%, #337ecc 100%);
-  border: none;
-  box-shadow: 0 2px 6px rgba(64, 158, 255, 0.3);
-}
-
-.link-btn:hover {
-  transform: translateX(2px) rotate(5deg);
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.4);
-}
-
-.link-btn:active {
-  transform: translateX(1px) rotate(3deg);
 }
 </style>
