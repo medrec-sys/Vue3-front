@@ -33,7 +33,7 @@ export const knowledgeApi = {
     },
 
     // 添加知识（上传文件）
-    add(file: File, vectorId: number): Promise<AxiosResponse<Result<number>>> {
+    add(file: File, vectorId: number): Promise<AxiosResponse<Result<string>>> {
         const formData = new FormData();
         formData.append('file', file);
 

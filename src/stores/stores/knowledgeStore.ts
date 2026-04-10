@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { knowledgeApi } from '@/api/knowledgeApi';
 import type { PageDTO } from '@/types/common/PageDTO';
 import type {Knowledge} from "@/types/entity/Knowledge";
+import {TaskUtil} from "@/utils/TaskUtil";
 
 export const useKnowledgeStore = defineStore('knowledge', () => {
     const knowledges = ref<Knowledge[]>([]);
@@ -22,7 +23,7 @@ export const useKnowledgeStore = defineStore('knowledge', () => {
         loading.value = true;
         try {
             const res = await knowledgeApi.add(file, vectorId);
-            await fetchKnowledgePage(); // 刷新知识列表
+            TaskUtil.addTask(res.data.data)
             return res.data;
         } finally {
             loading.value = false;

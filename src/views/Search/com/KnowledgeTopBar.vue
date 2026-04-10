@@ -61,7 +61,7 @@ const handleAdd = async (file: { raw: File }) => {
   const f = file.raw;
   const res = await knowledgeStore.createKnowledge(f, vectorStore.searchingVector.id)
   if (res.code) {
-    ElMessage.success('添加成功' as any);
+    ElMessage.info('需要一些时间，请耐心等待...' as any);
   } else {
     ElMessage.error('添加失败' as any);
   }

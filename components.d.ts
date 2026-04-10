@@ -34,7 +34,6 @@ declare module 'vue' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     File: typeof import('./src/components/File.vue')['default']
-    KnowledgeCard: typeof import('./src/views/Search/com/KnowledgeCard.vue')['default']
     MainAsideLayout: typeof import('./src/components/MainAsideLayout.vue')['default']
     Pagination: typeof import('./src/components/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
