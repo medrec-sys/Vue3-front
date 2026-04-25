@@ -166,8 +166,12 @@ const emit = defineEmits<{
   'update:modelValue': [value: boolean]
 }>()
 
-// 本地数据副本
-const localAgentData = ref<Agent>({} as Agent)
+const localAgentData = ref<Agent>({
+  temperature: 0.8,
+  maxMessage: 10,
+  topK: 5,
+  similarity: 0.8
+} as Agent)
 
 // 表单引用
 const formRef = ref<FormInstance>()
@@ -262,7 +266,7 @@ watch(() => props.modelValue, (newVal) => {
 
 // 监听 props.data 的变化
 watch(() => props.data, (newData) => {
-  if (newData) {
+  if (newData && !props.isAddOrUpdate) {
     localAgentData.value = { ...newData }
   }
 }, { immediate: true, deep: true })

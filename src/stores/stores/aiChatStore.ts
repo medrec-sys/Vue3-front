@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { aiChatApi } from '@/api/chatApi';
+import { aiChatApi} from '@/api/chatApi';
+import { knowledgeApi} from '@/api/knowledgeApi';
 import {useAgentStore} from "@/stores";
 import type {Document} from "@/types/entity/Document";
 import type {Chat} from "@/types/entity/Chat";
@@ -104,6 +105,28 @@ export const useAiChatStore = defineStore('aiChat', () => {
         return res.data;
     };
 
+    // 通过ids获取docs
+    const getDocsByIds = async (ids: string[]) => {
+        const res = await knowledgeApi.getDocsByIds(ids)
+        searchingVectors.value = res.data.data;
+        return res.data;
+    }
+
+    // 通过id获取doc
+    const getDocById = async (id: string) => {
+        const found = searchingVectors.value.find(d => d.metadata.id === id);
+        if (found) {
+            return {
+                data: [found]
+            };
+        }
+
+        const res = await knowledgeApi.getDocsByIds([id])
+
+        searchingVectors.value.push(res.data.data[0])
+        return res.data;
+    }
+
     // 辅助方法：添加用户消息
     const addUserMessage = (content: string) => {
         messages.value.push({
@@ -150,6 +173,8 @@ export const useAiChatStore = defineStore('aiChat', () => {
         }
     }
 
+
+
     return {
         messages,
         isStreaming,
@@ -160,5 +185,7 @@ export const useAiChatStore = defineStore('aiChat', () => {
         clearMessages,
         deleteChat,
         getVectors,
+        getDocsByIds,
+        getDocById,
     };
 });

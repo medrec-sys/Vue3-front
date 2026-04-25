@@ -44,11 +44,13 @@
               :step="1"
               :show-tooltip="true"
               class="param-slider"
+              :disabled="!isAddOrUpdate"
           />
         </div>
         <div class="form-tip">
           <el-icon><InfoFilled /></el-icon>
           <span>范围：512-2048，向量维度大小 | 当前值：{{ localVectorData.dim }}</span>
+          <span v-if="!isAddOrUpdate" style="color: #e6a23c; margin-left: 8px;">（创建后不可修改）</span>
         </div>
       </el-form-item>
 
@@ -99,7 +101,9 @@ const emit = defineEmits<{
 }>()
 
 // 本地数据副本
-const localVectorData = ref<Vector>({} as  Vector)
+const localVectorData = ref<Vector>({
+  dim: 1024
+} as  Vector)
 
 // 表单引用
 const formRef = ref<FormInstance>()
@@ -151,9 +155,6 @@ watch(() => props.modelValue, (newVal) => {
 watch(() => props.data, (newData) => {
   if (newData && Object.keys(newData).length > 0) {
     localVectorData.value = { ...newData }
-  } else if (props.isAddOrUpdate) {
-    // 添加模式重置默认值
-    localVectorData.value = {} as  Vector
   }
 }, { immediate: true, deep: true })
 

@@ -86,6 +86,7 @@ const handleSearch = () => {
     return;
   }
   emit('search', args.value);
+  args.value.query = args.value.query.replace(/\n+$/, '')
 };
 
 const handleShowKnowledge = () => {

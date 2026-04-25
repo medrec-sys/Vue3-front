@@ -6,7 +6,7 @@
     <div class="top-bar-right">
       <el-button type="primary" @click="handleAdd">
         <el-icon><Plus /></el-icon>
-        添加知识库
+        添加智能体
       </el-button>
     </div>
   </div>

@@ -17,7 +17,6 @@
           <span>{{ formatDate(knowledge.createTime) }}</span>
         </div>
       </div>
-
       <!-- 删除按钮 -->
       <div class="card-buttons">
         <el-button
@@ -29,12 +28,23 @@
             @click.stop="handleDelete"
         ></el-button>
       </div>
+
+      <!-- 链接按钮  -->
+      <div class="link-wrapper card-buttons" v-if="knowledge.path">
+        <el-button
+            type="primary"
+            :icon="Link"
+            circle
+            class="link-btn"
+            @click.stop="showFile(knowledge)"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Delete, Files } from '@element-plus/icons-vue'
+import {Delete, Files, Link} from '@element-plus/icons-vue'
 import type { Knowledge } from "@/types/entity/Knowledge"
 import {ElMessage, ElMessageBox } from "element-plus"
 import {useKnowledgeStore} from "@/stores";
@@ -44,6 +54,16 @@ const knowledgeStore = useKnowledgeStore()
 // 定义组件 props
 interface Props {
   knowledge: Knowledge
+}
+
+interface Emits {
+  ( event: "showFile", doc: Knowledge): void
+}
+
+const emit = defineEmits<Emits>()
+
+const showFile = (doc: Knowledge) => {
+  emit("showFile", doc)
 }
 
 const props = defineProps<Props>()
@@ -312,6 +332,65 @@ const handleDelete = async () => {
 
   .knowledge-card:hover {
     transform: translateX(3px);
+  }
+}
+
+.link-wrapper {
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.link-btn {
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+}
+
+.link-btn:hover {
+  transform: translateX(2px) scale(1.05);
+  box-shadow: 0 4px 14px rgba(102, 126, 234, 0.4);
+}
+
+.link-btn:active {
+  transform: translateX(1px) scale(0.98);
+}
+
+/* 按钮区域调整 - 保持间距 */
+.card-buttons {
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  margin-left: 8px;
+}
+
+.knowledge-card:hover .card-buttons {
+  opacity: 1;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .link-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .link-btn .el-icon {
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .link-btn {
+    width: 26px;
+    height: 26px;
+  }
+
+  .link-btn .el-icon {
+    font-size: 12px !important;
   }
 }
 </style>

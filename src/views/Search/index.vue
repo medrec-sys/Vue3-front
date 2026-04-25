@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {ref} from "vue";
-import {useVectorStore} from "@/stores";
+import {onMounted, ref} from "vue";
+import {useVectorStore, useKnowledgeStore} from "@/stores";
 import type {VectorSearchArgs} from "@/types/dto/VectorSearchArgs";
 import type {Document} from "@/types/entity/Document";
 import { ElMessage } from "element-plus";
@@ -10,8 +10,10 @@ import MainAsideLayout from "@/components/MainAsideLayout.vue";
 import File from "@/components/File.vue";
 import KnowledgeList from "@/views/Search/com/KnowledgeList.vue";
 import KnowledgeTopBar from "@/views/Search/com/KnowledgeTopBar.vue";
+import type {Knowledge} from "@/types/entity/Knowledge";
 
 const vectorStore = useVectorStore();
+const knowledgeStore = useKnowledgeStore();
 
 
 
@@ -29,16 +31,35 @@ const search = async (args: VectorSearchArgs) => {
 const showRight = ref(false);
 const showLeft = ref(false);
 
-const fileInfo = ref({
+interface FileInfo {
+  name: string
+  url: string
+  page: number
+  bbox: number[]
+}
+
+const fileInfo = ref<FileInfo>({
   name: "",
   url: "",
-  page: 1
+  page: 1,
+  bbox: []
 })
 
 const showFile = (document: Document) => {
   fileInfo.value.name = document.metadata.name
   fileInfo.value.url = document.metadata.url
   fileInfo.value.page = document.metadata.page
+  fileInfo.value.bbox =  JSON.parse(document.metadata.bbox)
+  console.log(fileInfo)
+
+  showRight.value = true
+}
+
+const showDoc = (doc: Knowledge) => {
+  fileInfo.value.name = doc.name
+  fileInfo.value.url = doc.path
+  fileInfo.value.page = 0
+  fileInfo.value.bbox = []
   showRight.value = true
 }
 
@@ -47,15 +68,29 @@ const showKnowledge = () => {
 }
 
 const closeR = () => {
-  fileInfo.value = {
-    name: "",
-    url: "",
-    page: 1
-  }
   showRight.value = false
 }
 
+// 加载知识库列表
+const loadKnowledgeList = async () => {
+  if (!vectorStore.searchingVector?.id) {
+    return
+  }
 
+  knowledgeStore.pageQuery.query.vectorId = vectorStore.searchingVector.id
+  await knowledgeStore.fetchKnowledgePage()
+}
+
+
+onMounted( async () => {
+  // 读取vector
+  const  s = localStorage.getItem('medrec_vector')
+  if (s) {
+    vectorStore.searchingVector = JSON.parse(s)
+  }
+  await loadKnowledgeList()
+
+})
 </script>
 
 <template>
@@ -89,6 +124,7 @@ const closeR = () => {
       ></KnowledgeTopBar>
       <KnowledgeList
         class="knowledge-list"
+        @showFile="showDoc"
       ></KnowledgeList>
     </template>
 
@@ -96,10 +132,10 @@ const closeR = () => {
     <template #right>
       <File
           class="file"
-          v-model:showRight="showRight"
-          :url="fileInfo.url"
-          :name="fileInfo.name"
-          :page="fileInfo.page"
+          :url=fileInfo.url
+          :name=fileInfo.name
+          :page="Number(fileInfo.page)"
+          :bbox="fileInfo.bbox"
           @close="closeR"
       />
     </template>

@@ -2,7 +2,6 @@ import {createRouter, createWebHistory} from 'vue-router';
 import type {RouteRecordRaw} from 'vue-router';
 import textRoutes from './router/system';
 import { ElMessage } from "element-plus";
-// import {ElMessage} from "element-plus";
 
 const routes: RouteRecordRaw[] = [
     ...textRoutes

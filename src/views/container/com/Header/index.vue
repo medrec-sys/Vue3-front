@@ -1,6 +1,5 @@
 <!-- index.vue -->
 <script setup lang="ts">
-import Logo from './com/logo.vue'
 import Title from './com/title.vue'
 import Poster from './com/poster.vue'
 import Cloud from './com/cloud.vue'

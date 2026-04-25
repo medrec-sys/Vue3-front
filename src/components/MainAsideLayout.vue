@@ -96,55 +96,54 @@ const stopResizeL = () => {
 let rightTimer: number | null = null
 let leftTimer: number | null = null
 const animateResize = (isShow: boolean, animationTimer: number | null,
-                       width:  Ref<number, number>, defaultWidth: number) => {
-  // 清除旧定时器
+                       width: Ref<number>, defaultWidth: number) => {
+  // 清除旧动画帧
   if (animationTimer) {
-    clearInterval(animationTimer)
+    cancelAnimationFrame(animationTimer)
     animationTimer = null
   }
 
   const duration = 250 // 动画总时长（毫秒）
-  const steps = 30     // 总帧数（越高越流畅）
-  const stepTime = duration / steps // 每帧间隔
-  let currentStep = 0
-
-  // 开始值 & 目标值
+  const startTime = performance.now()
   const startWidth = isShow ? 0 : width.value
   const endWidth = isShow ? defaultWidth : 0
 
   // 缓动动画函数（ease-out 曲线：先快后慢，最自然）
-  const animate = () => {
-    currentStep++
-    // 缓动曲线公式（先快后慢）
-    const progress = 1 - Math.pow(1 - currentStep / steps, 3)
+  const animate = (timestamp: number) => {
+    const elapsed = timestamp - startTime
+    const progress = Math.min(elapsed / duration, 1)
+    // 缓动曲线公式（ease-out）
+    const easedProgress = 1 - Math.pow(1 - progress, 3)
+    
     // 计算当前宽度
-    width.value = startWidth + (endWidth - startWidth) * progress
+    width.value = startWidth + (endWidth - startWidth) * easedProgress
 
-    // 结束动画
-    if (currentStep >= steps) {
+    // 继续动画或结束
+    if (progress < 1) {
+      animationTimer = requestAnimationFrame(animate)
+    } else {
       width.value = endWidth
-      clearInterval(animationTimer!)
       animationTimer = null
     }
   }
 
-  // 启动定时器
-  animationTimer = window.setInterval(animate, stepTime)
+  // 启动动画
+  animationTimer = requestAnimationFrame(animate)
 }
 // 监听侧边栏显示隐藏，平滑展开/收起
 watch(() => props.showRightAside, (newVal) => {
-  if (rightTimer) clearInterval(rightTimer)
+  if (rightTimer) cancelAnimationFrame(rightTimer)
   animateResize(newVal, rightTimer, rightWidth, defaultRightWidth)
 })
 
 watch(() => props.showLeftAside, (newVal) => {
-  if (leftTimer) clearInterval(leftTimer)
+  if (leftTimer) cancelAnimationFrame(leftTimer)
   animateResize(newVal, leftTimer, leftWidth, defaultLeftWidth)
 })
 
 onUnmounted(() => {
-  if (rightTimer) clearInterval(rightTimer)
-  if (leftTimer) clearInterval(leftTimer)
+  if (rightTimer) cancelAnimationFrame(rightTimer)
+  if (leftTimer) cancelAnimationFrame(leftTimer)
 })
 </script>
 

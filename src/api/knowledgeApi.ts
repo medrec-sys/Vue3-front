@@ -1,6 +1,7 @@
 import type {PageDTO} from "@/types/common/PageDTO";
 import type {Result} from "@/types/common/Result";
 import type {PageVO} from "@/types/common/PageVO";
+import type {Document} from "@/types/entity/Document";
 import type { AxiosResponse } from 'axios';
 import {myAxios} from "@/utils/axios";
 import type {Knowledge} from "@/types/entity/Knowledge";
@@ -61,5 +62,14 @@ export const knowledgeApi = {
             method: 'get',
             url: `/api/knowledge/vector/${id}`,
         });
-    }
+    },
+
+    // 根据ids获取文档
+    getDocsByIds(ids: string[]): Promise<AxiosResponse<Result<Document[]>>> {
+        return myAxios({
+            method: 'post',
+            url: '/api/knowledge/docs',
+            data: ids,
+        });
+    },
 };

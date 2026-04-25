@@ -94,6 +94,8 @@ const click = () => {
   vectorStore.searchingVector = props.vector
   router.push(ROUTE_PATHS.SEARCH)
   homeStore.activeMenuItem = ROUTE_PATHS.SEARCH
+  // vector 存本地
+  localStorage.setItem('medrec_vector', JSON.stringify(props.vector))
 }
 
 const alertVector = () => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {Delete, Notebook, Promotion, FolderChecked} from "@element-plus/icons-vue";
-import { ref } from "vue";
+import {ref} from "vue";
 import {useAiChatStore, useAgentStore} from "@/stores";
 import {ElMessage, ElMessageBox} from "element-plus";
 
@@ -11,6 +11,7 @@ const userInput = ref('')
 
 interface Emits {
   (e: 'showVector'): void;
+
   (e: 'showDocument'): void;
 }
 
@@ -36,7 +37,8 @@ const clearChat = async () => {
     }
   } catch {
     // 用户取消删除，不做任何操作
-  }}
+  }
+}
 
 const handleSendMessage = async () => {
   if (!userInput.value.trim()) {
@@ -86,6 +88,11 @@ const showDocument = () => {
         </el-tooltip>
 
       </el-button-group>
+      <div>
+        <div class="current-agent" v-if="agentStore.usingAgent?.name">
+          <span class="agent-name">{{ agentStore.usingAgent.name }}</span>
+        </div>
+      </div>
     </div>
     <div class="input-wrapper">
       <el-input
@@ -297,5 +304,54 @@ const showDocument = () => {
 
 .input-wrapper :deep(.el-textarea__inner)::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
+}
+
+.chat-actions {
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between; /* 关键：让两端对齐 */
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-actions :deep(.el-button-group) {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0; /* 防止按钮组被压缩 */
+}
+
+/* 当前 agent 显示样式 */
+.current-agent {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+  border-radius: 20px;
+  font-size: 13px;
+  white-space: nowrap; /* 防止文字换行 */
+}
+
+
+
+.agent-name {
+  color: #667eea;
+  font-weight: 600;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 响应式：小屏幕时隐藏标签只显示名称 */
+@media (max-width: 768px) {
+  .current-agent {
+    padding: 4px 8px;
+  }
+
+  .agent-name {
+    max-width: 120px;
+  }
 }
 </style>

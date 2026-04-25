@@ -5,16 +5,22 @@
       <!-- 左侧元数据 -->
       <div class="meta-left">
         <div class="meta-badge" v-if="document.metadata.name">
-          <el-icon><DocumentChecked /></el-icon>
+          <el-icon>
+            <DocumentChecked/>
+          </el-icon>
           <span>{{ document.metadata.name }}</span>
         </div>
         <div class="meta-badge" v-if="document.metadata.page">
-          <el-icon><Notebook /></el-icon>
+          <el-icon>
+            <Notebook/>
+          </el-icon>
           <span>第 {{ document.metadata.page }} 页</span>
         </div>
         <div class="meta-badge distance">
-          <el-icon><TrendCharts /></el-icon>
-          <span>相似距离：{{ document.metadata.distance.toFixed(4) }}</span>
+          <el-icon>
+            <TrendCharts/>
+          </el-icon>
+          <span>相似度：{{ document.score }}</span>
         </div>
       </div>
 
@@ -32,14 +38,15 @@
 
     <!-- 核心内容 -->
     <div class="document-content">
-      <p class="text">{{ document.text }}</p>
+      <p class="text" v-html="markDownIt.render(document.text)"></p>
     </div>
   </el-card>
 </template>
 
 <script setup lang="ts">
-import type { Document } from '@/types/entity/Document'
-import { DocumentChecked, Notebook, TrendCharts, Link } from '@element-plus/icons-vue'
+import type {Document} from '@/types/entity/Document'
+import {DocumentChecked, Notebook, TrendCharts, Link} from '@element-plus/icons-vue'
+import {markDownIt} from "@/utils/tools";
 
 defineProps<{
   document: Document
@@ -51,8 +58,8 @@ interface Emits {
 
 const emit = defineEmits<Emits>();
 
-const showFile = ( document: Document) => {
-  emit('showFile',  document);
+const showFile = (document: Document) => {
+  emit('showFile', document);
 };
 
 </script>
@@ -155,7 +162,7 @@ const showFile = ( document: Document) => {
   padding: 4px 0;
 }
 
-.text {
+.text * {
   user-select: text;
   line-height: 1.8;
   color: #2c3e50;

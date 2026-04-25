@@ -78,6 +78,7 @@ const handleAdd = async (file: { raw: File }) => {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+  width: 100%;
 }
 
 /* 中间区域 */
@@ -133,7 +134,7 @@ const handleAdd = async (file: { raw: File }) => {
 
 .add-btn {
   border-radius: 14px;
-  padding: 10px 20px;
+  padding: 10px 10px;
   font-weight: 600;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;

@@ -57,7 +57,9 @@ onUnmounted(() => {
             :class="{ active: homeStore.activeMenuItem === item.routePath }"
             @click="handleMenuItemClick(item.routePath)"
         >
-          <router-link :to="item.routePath">
+          <router-link
+              :to="item.routePath"
+          >
             <el-tooltip
                 effect="light"
                 :content="item.name"

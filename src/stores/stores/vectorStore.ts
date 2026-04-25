@@ -116,7 +116,7 @@ export const useVectorStore = defineStore('vector', () => {
         try {
             const res  = await vectorApi.search(args, searchingVector.value.id);
             // 排序
-            res.data.data.sort((a, b) => a.metadata.distance - b.metadata.distance);
+            res.data.data.sort((a, b) => b.score - a.score);
             return res.data
         } finally {}
     }

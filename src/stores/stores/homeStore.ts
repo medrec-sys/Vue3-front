@@ -11,10 +11,12 @@ export const useHomeStore = defineStore('homeStore', () => {
         city: string,
         province: string
     }>('未知')
+
+
     return {
         weatherType,
         activeMenuItem,
         temperature,
-        location
+        location,
     }
 })

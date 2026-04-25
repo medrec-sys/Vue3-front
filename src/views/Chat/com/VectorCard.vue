@@ -55,7 +55,7 @@
                 <span class="time-info">🕒 {{ formatDate(doc.createTime) }}</span>
               </div>
             </div>
-            <div class="link-right" v-if="doc.path">
+            <div class="link-wrapper" v-if="doc.path">
               <el-button
                   type="primary"
                   :icon="Link"
@@ -433,6 +433,60 @@ const showFile = (doc: Knowledge) => {
 
   .docs-container {
     max-height: 280px;
+  }
+}
+
+// 添加 link-wrapper 包裹层样式
+.link-wrapper {
+  flex-shrink: 0;
+  opacity: 0;                    // 默认隐藏
+  transition: opacity 0.3s ease;
+  margin-left: 8px;
+}
+
+.doc-item:hover .link-wrapper {
+  opacity: 1;                    // 悬停时显示
+}
+
+.link-btn {
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+
+  &:hover {
+    transform: translateX(2px) scale(1.05);
+    box-shadow: 0 4px 14px rgba(102, 126, 234, 0.4);
+  }
+
+  &:active {
+    transform: translateX(1px) scale(0.98);
+  }
+}
+
+// 移动端适配
+@media (max-width: 768px) {
+  .link-btn {
+    width: 28px;
+    height: 28px;
+
+    .el-icon {
+      font-size: 14px !important;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .link-btn {
+    width: 26px;
+    height: 26px;
+
+    .el-icon {
+      font-size: 12px !important;
+    }
   }
 }
 </style>

@@ -22,34 +22,30 @@
           v-for="knowledge in knowledgeStore.knowledges"
           :key="knowledge.id"
           :knowledge="knowledge"
+          @showFile="showFile"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useKnowledgeStore, useVectorStore } from "@/stores"
-import { onMounted } from "vue"
+import { useKnowledgeStore } from "@/stores"
 import KnowledgeCard from "@/views/Search/com/KnowledgeCard.vue"
 import { Loading, FolderOpened } from '@element-plus/icons-vue'
+import type {Knowledge} from "@/types/entity/Knowledge";
 
 const knowledgeStore = useKnowledgeStore()
-const vectorStore = useVectorStore()
 
-// 加载知识库列表
-const loadKnowledgeList = async () => {
-  if (!vectorStore.searchingVector?.id) {
-    return
-  }
-
-  knowledgeStore.pageQuery.query.vectorId = vectorStore.searchingVector.id
-  await knowledgeStore.fetchKnowledgePage()
+interface Emits {
+  (event: 'showFile', doc: Knowledge) : void
 }
 
+const emit = defineEmits<Emits>()
 
-onMounted(async () => {
-  await loadKnowledgeList()
-})
+const showFile = (doc: Knowledge) => {
+  emit('showFile', doc)
+}
+
 </script>
 // KnowledgeList.vue
 <style scoped>
@@ -154,7 +150,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  max-width: 900px;
+  width: 100%;
   margin: 0 auto;
 }
 

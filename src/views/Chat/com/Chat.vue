@@ -3,7 +3,7 @@ import {useAiChatStore} from "@/stores";
 import {Delete, ChatDotRound, UserFilled, WarningFilled, Loading, ChatLineSquare} from "@element-plus/icons-vue";
 import {markDownIt} from "@/utils/tools";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {onMounted} from "vue";
+import {nextTick, onMounted, ref, watch} from "vue";
 
 const chatStore = useAiChatStore()
 
@@ -44,20 +44,69 @@ const handleDeleteMessage = async (messageId: number) => {
   }
 }
 
-onMounted(async () => {
-  await chatStore.loadChatHistory()
+const messagesContainer = ref<HTMLElement | null>(null)
+const isUserScrolling = ref(false)
+let scrollTimer: ReturnType<typeof setTimeout> | null = null
+
+// 滚动到底部
+const scrollToBottom = async (str: 'instant' | 'smooth' = 'smooth') => {
+  await nextTick()
+  if (messagesContainer.value && !isUserScrolling.value) {
+    messagesContainer.value.scrollTo({
+      top: messagesContainer.value.scrollHeight,
+      behavior: str
+    })
+  }
+}
+
+// 监听用户滚动
+const handleScroll = () => {
+  if (!messagesContainer.value) return
+
+  isUserScrolling.value = true
+
+  // 清除之前的定时器
+  if (scrollTimer) clearTimeout(scrollTimer)
+
+  // 如果用户滚动到底部附近，解除锁定
+  const isNearBottom = messagesContainer.value.scrollHeight - messagesContainer.value.scrollTop - messagesContainer.value.clientHeight < 50
+  if (isNearBottom) {
+    isUserScrolling.value = false
+  }
+}
+
+// 监听消息变化，自动滚动
+watch(
+    () => chatStore.messages.length,
+    () => {
+      scrollToBottom()
+    }
+)
+
+// 监听流式输出内容变化
+watch(
+    () => chatStore.messages[chatStore.messages.length - 1]?.content,
+    () => {
+      scrollToBottom()
+    },
+    { deep: true }
+)
+
+// 初始化时滚动到底部
+onMounted(() => {
+  scrollToBottom('instant')
 })
 
 </script>
 
 <template>
-  <div ref="messagesContainer" class="chat-messages">
+  <div ref="messagesContainer" class="chat-messages" @scroll="handleScroll">
     <!-- 空状态 -->
     <div v-if="chatStore.messages.length === 0 && !chatStore.isStreaming" class="empty-state">
       <div class="empty-state-content">
         <div class="empty-state-icon">
           <el-icon :size="80">
-            <ChatLineSquare />
+            <ChatLineSquare/>
           </el-icon>
         </div>
         <h3 class="empty-state-title">开始新的对话</h3>
@@ -311,6 +360,11 @@ onMounted(async () => {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: all 0.2s;
 }
+
+.message-text * {
+  user-select: text;
+}
+
 
 .message-text:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);

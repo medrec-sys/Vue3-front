@@ -96,6 +96,8 @@ const click = () => {
   agentStore.usingAgent = props.agent
   router.push(ROUTE_PATHS.CHAT)
   homeStore.activeMenuItem = ROUTE_PATHS.CHAT
+  // agentId 存储到本地
+  localStorage.setItem('medrec_agent', JSON.stringify(props.agent))
 }
 
 </script>
